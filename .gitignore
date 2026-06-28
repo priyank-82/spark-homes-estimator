@@ -1,1 +1,7 @@
 node_modules/
+test-results/
+*.docx
+*.csv
+Example App.html
+package.json
+package-lock.json
