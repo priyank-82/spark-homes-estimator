@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="theme-color" content="#1e293b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="data:application/json,{}" id="manifestLink">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAACQ0lEQVR4nO3dQQ0AIxDAsP83Dwv4l0BCJ3O2+4oIS0RkzQEkf4/JJJEkJkkkSZJIEkkiSSJJkkiSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkiSSJJIkkSSRJJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJIkkkSSRJJEmkfwAkg0U2qZxKHIAAAAASUVORK5CYII=">
+<title>Spark Homes Estimator</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--amber:#f59e0b;--amber-light:#fbbf24;--slate-800:#1e293b;--slate-700:#334155;--slate-600:#475569;--slate-200:#e2e8f0;--slate-100:#f1f5f9;--green:#22c55e;--red:#ef4444;--blue:#3b82f6}
+html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f8fafc;color:#1e293b;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+#app{height:100dvh;display:flex;flex-direction:column;max-width:480px;margin:0 auto;position:relative;overflow:hidden}
+header{background:var(--slate-800);color:white;padding:12px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;z-index:30;position:relative;min-height:56px}
+header h1{font-size:18px;font-weight:700;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+header .logo{width:28px;height:28px;background:var(--amber);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;color:var(--slate-800);flex-shrink:0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 14px;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:all .12s;touch-action:manipulation;white-space:nowrap}
+.btn:active{transform:scale(0.95)}.btn:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.btn-sm{padding:6px 10px;font-size:12px}
+.btn-icon{padding:8px;border-radius:8px;background:transparent;border:none;color:white;cursor:pointer;touch-action:manipulation}
+.btn-icon:active{background:rgba(255,255,255,.15)}
+.btn-primary{background:var(--amber);color:var(--slate-800)}
+.btn-primary:hover{background:var(--amber-light)}
+.btn-secondary{background:var(--slate-700);color:white}
+.btn-secondary:hover{background:var(--slate-600)}
+.btn-danger{background:#ef4444;color:white}
+.btn-ghost{background:transparent;color:var(--slate-700);border:1px solid var(--slate-200)}
+.btn-ghost:hover{background:var(--slate-100)}
+.summary-section{font-size:13px;padding:10px 16px;border-bottom:1px solid var(--slate-100);display:flex;justify-content:space-between;align-items:center}.summary-section:last-child{border-bottom:none;font-weight:700}.summary-section .ss-label{color:var(--slate-600)}.summary-section .ss-value{font-weight:600}
+.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.card{background:white;border-radius:12px;margin:6px 12px;box-shadow:0 1px 3px rgba(0,0,0,.08);overflow:hidden;transition:box-shadow .2s,transform .15s}
+.card-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;user-select:none;gap:8px;-webkit-tap-highlight-color:transparent}
+.card-header:active{background:var(--slate-100)}
+.card-header h3{font-size:15px;font-weight:600;flex:1}
+.card-header .arrow{transition:transform .3s cubic-bezier(.4,0,.2,1);font-size:12px;color:var(--slate-600)}
+.card-header .arrow.open{transform:rotate(180deg)}
+.group-content{display:none;border-top:1px solid var(--slate-100)}
+.group-content.open{display:block;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.badge{display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600}
+.badge-green{background:#dcfce7;color:#166534}
+.badge-gray{background:var(--slate-100);color:var(--slate-600)}
+.badge-amber{background:#fef3c7;color:#92400e}
+.item-row{display:grid;grid-template-columns:1fr 60px 70px 70px;gap:6px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--slate-100);font-size:13px;transition:background .15s}
+.item-row:last-child{border-bottom:none}
+.item-row.selected{background:#fffbeb}
+.item-name{font-weight:500;word-break:break-word;line-height:1.3}
+.item-unit{font-size:11px;color:var(--slate-600);margin-top:1px}
+.item-qty input{width:100%;padding:4px 6px;border:1px solid var(--slate-200);border-radius:6px;font-size:13px;text-align:center;background:white;-webkit-appearance:none}
+.item-qty input:focus{outline:2px solid var(--amber);border-color:transparent;box-shadow:0 0 0 3px rgba(245,158,11,.15)}
+.item-cost{text-align:right;font-weight:600;font-size:13px;white-space:nowrap}
+.item-total{text-align:right;font-weight:700;font-size:13px;white-space:nowrap;color:var(--slate-800)}
+.bottom-bar{position:sticky;bottom:0;background:white;border-top:2px solid var(--amber);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;z-index:20;box-shadow:0 -2px 10px rgba(0,0,0,.08)}
+.total-label{font-size:13px;color:var(--slate-600)}
+.total-amount{font-size:22px;font-weight:800;color:var(--slate-800);transition:color .2s}
+.total-amount .currency{font-size:14px;font-weight:600;color:var(--slate-600)}
+.progress-bar{height:4px;background:var(--slate-200);border-radius:2px;overflow:hidden;margin:0 12px 4px}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--green),#4ade80);border-radius:2px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.progress-text{font-size:11px;color:var(--slate-600);padding:2px 12px 8px}
+.tab-bar{display:flex;background:var(--slate-800);padding:4px 8px;gap:4px;flex-shrink:0}
+.tab{flex:1;padding:8px 4px;text-align:center;font-size:12px;font-weight:500;color:rgba(255,255,255,.6);border:none;background:transparent;border-radius:8px;cursor:pointer;touch-action:manipulation;transition:all .15s;font-family:inherit}
+.tab.active{background:rgba(255,255,255,.15);color:white}
+.tab:active{background:rgba(255,255,255,.1)}
+.tab:focus-visible{outline:2px solid var(--amber);outline-offset:-2px}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:50;display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeInOverlay .2s ease}
+@keyframes fadeInOverlay{from{opacity:0}to{opacity:1}}
+.modal{background:white;border-radius:16px;padding:24px;width:100%;max-width:400px;max-height:80vh;overflow-y:auto;animation:slideUp .25s cubic-bezier(.4,0,.2,1)}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+.modal h2{font-size:18px;font-weight:700;margin-bottom:16px}
+.modal label{display:block;font-size:13px;font-weight:600;color:var(--slate-600);margin-bottom:4px;margin-top:12px}
+.modal input[type=text],.modal input[type=number],.modal select{width:100%;padding:10px 12px;border:1px solid var(--slate-200);border-radius:8px;font-size:15px;background:white;-webkit-appearance:none}
+.modal input:focus{outline:2px solid var(--amber);border-color:transparent;box-shadow:0 0 0 3px rgba(245,158,11,.15)}
+.modal .btn-row{display:flex;gap:8px;margin-top:20px}
+.modal .btn-row .btn{flex:1}
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:8px 12px}
+.photo-item{position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;background:var(--slate-100)}
+.photo-item img{width:100%;height:100%;object-fit:cover;pointer-events:none}
+.photo-item .del-photo{position:absolute;top:4px;right:4px;width:24px;height:24px;background:rgba(0,0,0,.6);border:none;border-radius:50%;color:white;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2}
+.photo-item .del-photo:active{background:rgba(239,68,68,.8)}
+.photo-item .swipe-hint{position:absolute;bottom:4px;left:50%;transform:translateX(-50%);font-size:9px;color:rgba(255,255,255,.7);background:rgba(0,0,0,.4);padding:2px 8px;border-radius:4px;pointer-events:none;opacity:0;transition:opacity .3s}
+.photo-item.swiped .swipe-hint{opacity:1}
+.photo-item.deleting{animation:swipeOut .3s ease forwards}
+@keyframes swipeOut{to{transform:translateX(-120%);opacity:0}}
+.room-chip{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:99px;font-size:12px;font-weight:500;cursor:pointer;touch-action:manipulation;transition:all .15s;border:1.5px solid var(--slate-200);background:white;color:var(--slate-700)}
+.room-chip .del-chip{width:16px;height:16px;border-radius:50%;border:none;background:var(--slate-200);color:var(--slate-600);font-size:10px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;margin-left:2px}
+.room-chip .del-chip:active{background:var(--red);color:white}
+.no-action{display:flex;align-items:center;gap:8px;padding:10px 16px;font-size:13px;color:var(--slate-600);border-bottom:1px solid var(--slate-100)}
+.no-action input[type=checkbox]:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.empty-state{text-align:center;padding:40px 20px;color:var(--slate-600)}
+.empty-state h2{font-size:20px;font-weight:700;margin-bottom:8px;color:var(--slate-800)}
+.empty-state p{font-size:14px;line-height:1.5}
+.empty-state .btn{margin-top:16px}
+.price-input{width:100%;padding:4px 6px;border:1px solid var(--slate-200);border-radius:6px;font-size:12px;text-align:right;background:transparent}
+.price-input:focus{outline:2px solid var(--amber);border-color:transparent;background:white;box-shadow:0 0 0 3px rgba(245,158,11,.15)}
+.override-badge{position:absolute;top:-4px;right:-4px;width:12px;height:12px;background:var(--amber);border-radius:50%;font-size:8px;display:flex;align-items:center;justify-content:center;color:var(--slate-800);font-weight:700;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+@media(min-width:481px){#app{max-width:480px;margin:0 auto;border-left:1px solid var(--slate-200);border-right:1px solid var(--slate-200)}}
+@media(max-width:380px){.item-row{grid-template-columns:1fr 50px 55px 55px;font-size:12px}}
+@media(max-width:360px){.item-row{grid-template-columns:1fr;gap:4px;padding:8px 12px}.item-row>div:not(:first-child){display:flex;align-items:center;gap:8px;padding-left:32px}.item-cost{text-align:left}.item-total{text-align:left}}
+@media(display-mode:standalone){header{padding-top:env(safe-area-inset-top,12px)}}
+input[type=checkbox]{width:18px;height:18px;accent-color:var(--amber);cursor:pointer;flex-shrink:0}
+input[type=checkbox]:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.quick-access{display:flex;gap:6px;padding:4px 12px;flex-wrap:wrap}
+.deal-analyzer{background:linear-gradient(135deg,#1e293b,#334155);color:white;border-radius:12px;padding:16px;margin:8px 12px}
+.deal-analyzer h3{font-size:15px;font-weight:700;margin-bottom:12px;color:var(--amber)}
+.deal-analyzer .row{display:flex;justify-content:space-between;padding:6px 0;font-size:13px;border-bottom:1px solid rgba(255,255,255,.1)}
+.deal-analyzer .row.total{font-size:16px;font-weight:800;border-bottom:none;padding-top:10px;border-top:2px solid var(--amber);margin-top:6px}
+.deal-analyzer .row .label{color:rgba(255,255,255,.7)}
+.deal-analyzer .row .value{font-weight:600}
+.deal-analyzer .positive{color:#4ade80}
+.deal-analyzer .negative{color:#f87171}
+.deal-analyzer input{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:white;padding:8px 10px;border-radius:8px;font-size:14px;width:100%;margin-top:4px;-webkit-appearance:none}
+.deal-analyzer input:focus{outline:2px solid var(--amber);border-color:transparent}
+.deal-analyzer input::placeholder{color:rgba(255,255,255,.4)}
+.deal-analyzer .cost-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.deal-analyzer .cost-row>div{flex:1;min-width:80px}
+.deal-analyzer .cost-row label{font-size:11px;color:rgba(255,255,255,.5);display:block;margin-bottom:2px}
+.deal-analyzer .cost-row input{font-size:12px;padding:6px 8px}
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .6s linear}
+@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1e293b;color:white;padding:10px 24px;border-radius:10px;font-size:13px;font-weight:500;z-index:100;animation:toastIn .3s ease;max-width:380px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+.project-item{transition:opacity .3s,transform .3s;cursor:pointer}
+.project-item.deleting{animation:fadeOut .25s ease forwards}
+@keyframes fadeOut{to{opacity:0;transform:translateX(-30px)}}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="logo" aria-hidden="true">S</div>
+    <h1 id="appTitle">Spark Estimator</h1>
+    <button class="btn-icon" id="menuBtn" data-action="menu" aria-label="Project menu">&#8942;</button>
+    <button class="btn-icon" id="backBtn" data-action="back" aria-label="Back to project list" style="display:none">&#8592;</button>
+  </header>
+  <div class="progress-bar" id="topProgressBar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <div class="progress-text" id="progressText">0 / 0 groups complete</div>
+  <div id="projectListView" class="scroll">
+    <div style="padding:16px 12px 8px">
+      <button class="btn btn-primary" data-action="new-project" style="width:100%">+ New Project</button>
+    </div>
+    <div id="projectList"></div>
+  </div>
+  <div id="projectView" class="scroll" style="display:none">
+    <div id="dealAnalyzer" class="deal-analyzer" style="display:none">
+      <h3>&#128176; Deal Analyzer</h3>
+      <div style="display:flex;gap:8px">
+        <div style="flex:1">
+          <label style="font-size:12px;color:rgba(255,255,255,.6)">ARV (After Repair Value)</label>
+          <input type="number" id="arvInput" data-action="deal-input" data-field="arv" placeholder="$0" step="1000" inputmode="numeric">
+        </div>
+        <div style="flex:1">
+          <label style="font-size:12px;color:rgba(255,255,255,.6)">Purchase Price</label>
+          <input type="number" id="purchaseInput" data-action="deal-input" data-field="purchase" placeholder="$0" step="1000" inputmode="numeric">
+        </div>
+      </div>
+      <div class="cost-row">
+        <div>
+          <label>Closing Costs (%)</label>
+          <input type="number" id="closingPctInput" data-action="deal-input" data-field="closingPct" placeholder="3" step="0.1" min="0" max="20" inputmode="decimal">
+        </div>
+        <div>
+          <label>Monthly Holding</label>
+          <input type="number" id="monthlyHoldInput" data-action="deal-input" data-field="monthlyHold" placeholder="1200" step="100" min="0" inputmode="numeric">
+        </div>
+        <div>
+          <label>Months Held</label>
+          <input type="number" id="monthsHeldInput" data-action="deal-input" data-field="monthsHeld" placeholder="6" step="1" min="0" inputmode="numeric">
+        </div>
+        <div>
+          <label>Selling Costs (%)</label>
+          <input type="number" id="sellingPctInput" data-action="deal-input" data-field="sellingPct" placeholder="6" step="0.1" min="0" max="15" inputmode="decimal">
+        </div>
+      </div>
+      <div id="dealResults"></div>
+    </div>
+    <div id="sectionsContainer"></div>
+    <div style="height:80px"></div>
+  </div>
+  <div id="photoView" class="scroll" style="display:none">
+    <div style="padding:12px">
+      <button class="btn btn-primary" data-action="add-photo" style="width:100%">+ Take Photo</button>
+      <input type="file" accept="image/*" capture="environment" id="photoInput" style="display:none">
+    </div>
+    <div class="photo-grid" id="photoGrid"></div>
+    <div style="height:80px"></div>
+  </div>
+  <div id="settingsView" class="scroll" style="display:none">
+    <div class="card" style="padding:16px;margin:8px 12px">
+      <h3 style="font-size:15px;font-weight:700;margin-bottom:12px">Global Price Overrides</h3>
+      <p style="font-size:12px;color:var(--slate-600);margin-bottom:12px">Default prices for all new projects. Per-project overrides still apply on top.</p>
+      <div style="display:flex;gap:8px;margin-bottom:12px">
+        <button class="btn btn-ghost btn-sm" data-action="import-csv" style="flex:1">Import from CSV</button>
+        <button class="btn btn-ghost btn-sm" data-action="reset-global-prices" style="flex:1">Reset All</button>
+      </div>
+      <input type="file" accept=".csv" id="csvInput" style="display:none">
+      <div id="globalPricesList"></div>
+    </div>
+    <div class="card" style="padding:16px;margin:8px 12px">
+      <h3 style="font-size:15px;font-weight:700;margin-bottom:12px">About</h3>
+      <p style="font-size:13px;color:var(--slate-600)">Spark Homes Repair Estimator v3.0<br>Built for the Spark Homes Developer Contest.</p>
+    </div>
+    <div style="height:80px"></div>
+  </div>
+  <div class="tab-bar" id="tabBar" role="tablist">
+    <button class="tab active" data-action="tab" data-tab="items" role="tab" aria-selected="true">&#128221; Items</button>
+    <button class="tab" data-action="tab" data-tab="photos" role="tab" aria-selected="false">&#128247; <span id="photoCountLabel">Photos (<span id="photoCount">0</span>)</span></button>
+    <button class="tab" data-action="tab" data-tab="analyzer" role="tab" aria-selected="false">&#128176; Deal</button>
+    <button class="tab" data-action="tab" data-tab="settings" role="tab" aria-selected="false">&#9881; Prices</button>
+  </div>
+  <div class="bottom-bar" id="bottomBar">
+    <div>
+      <div class="total-label">Total Estimate</div>
+      <div class="total-amount"><span class="currency">$</span><span id="grandTotal">0</span></div>
+    </div>
+    <div style="display:flex;gap:6px">
+      <button class="btn btn-secondary btn-sm" data-action="export">Export</button>
+      <button class="btn btn-primary btn-sm" data-action="show-rooms">Rooms</button>
+    </div>
+  </div>
+</div>
+<div id="modalOverlay" class="modal-overlay" style="display:none" role="dialog" aria-modal="true">
+  <div class="modal" id="modalContent"></div>
+</div>
+<script>
+function crc32(r){for(var a,o=[],c=0;c<256;c++){a=c;for(var f=0;f<8;f++)a=1&a?3988292384^a>>>1:a>>>1;o[c]=a}for(var n=-1,i=0;i<r.length;i++)n=n>>>8^o[255&(n^r.charCodeAt(i))];return(-1^n)>>>0}
+function makeZIP(files){for(var l=[],c=[],o=0,i=0;i<files.length;i++){var f=files[i],n=f[0],d=f[1],t=new TextEncoder().encode(d),s=d.length,e=0;for(var u=0;u<d.length;u++){var h=t[u];e+=h;e+=e<<8;e^=e>>4;e=(e*16777619)>>>0}var a=0;var p=new Uint8Array(4);p[0]=e&255;p[1]=(e>>8)&255;p[2]=(e>>16)&255;p[3]=(e>>24)&255;var g=crc32(d),b=(58+t.length+12-1+4+10),v=t.length,w=new Uint8Array(30+t.length+s);w.set([80,75,3,4,20,0,0,0,0,0,g&255,(g>>8)&255,(g>>16)&255,(g>>24)&255,s&255,(s>>8)&255,(s>>16)&255,(s>>24)&255,s&255,(s>>8)&255,(s>>16)&255,(s>>24)&255,t.length&255,(t.length>>8)&255,0,0],0);for(var y=0;y<t.length;y++)w[30+y]=t[y];for(var _=0;_<d.length;_++)w[30+t.length+_]=d[_].charCodeAt(0);l.push({offset:o,header:w});o+=w.length;var E=new Uint8Array(46+t.length);E.set([80,75,1,2,20,0,20,0,0,0,0,0,g&255,(g>>8)&255,(g>>16)&255,(g>>24)&255,s&255,(s>>8)&255,(s>>16)&255,(s>>24)&255,s&255,(s>>8)&255,(s>>16)&255,(s>>24)&255,t.length&255,(t.length>>8)&255,0,0,0,0,0,0,0,0,0,0,0,0,l[i].offset&255,(l[i].offset>>8)&255,(l[i].offset>>16)&255,(l[i].offset>>24)&255],0);for(var y=0;y<t.length;y++)E[46+y]=t[y];c.push(E)}var H=[],S=0;l.forEach(function(r){H.push(r.header);S+=r.header.length});var k=[],C=0;c.forEach(function(r){k.push(r);C+=r.length});var T=new Uint8Array(22);T.set([80,75,5,6,0,0,0,0,c.length&255,(c.length>>8)&255,c.length&255,(c.length>>8)&255,C&255,(C>>8)&255,(C>>16)&255,(C>>24)&255,S&255,(S>>8)&255,(S>>16)&255,(S>>24)&255,0,0],0);var A=[];l.forEach(function(r){A.push(r.header)});c.forEach(function(r){A.push(r)});A.push(T);var M=new Uint8Array(A.reduce(function(t,r){return t+r.length},0)),q=0;for(var i=0;i<A.length;i++){M.set(A[i],q);q+=A[i].length}return M}
+function makeXLSX(data,sheets){if(typeof JSZip!=='undefined'){var z=new JSZip();sheets.forEach(function(s){var r='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetData>';s.data.forEach(function(row,i){r+='<row r="'+(i+1)+'">';row.forEach(function(cell,j){var t=typeof cell==='number'?'n':'inlineStr';r+='<c r="'+String.fromCharCode(65+j)+(i+1)+'" t="'+t+'">';if(t==='n'){r+='<v>'+cell+'</v>'}else{r+='<is><t>'+(''+cell).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</t></is>'}r+='</c>'});r+='</row>'});r+='</sheetData></worksheet>';z.file('xl/worksheets/sheet'+(s.id)+'.xml',r)});z.file('[Content_Types].xml','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Default Extension="rels" ContentType="application/vnd.openxmlformats-officedocument.package.relationships+xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>');z.file('_rels/.rels','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>');z.file('xl/workbook.xml','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>'+sheets.map(function(s,i){return '<sheet name="'+(s.name||'Sheet'+(i+1))+'" sheetId="'+(i+1)+'" r:id="rId'+(i+1)+'"/>'}).join('')+'</sheets></workbook>');z.file('xl/_rels/workbook.xml.rels','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'+sheets.map(function(s,i){return '<Relationship Id="rId'+(i+1)+'" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet'+(i+1)+'.xml"/>'}).join('')+'</Relationships>');z.file('xl/styles.xml','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="1"><font><sz val="11"/></font></fonts><fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellXfs></styleSheet>');return z.generateAsync({type:'uint8array'})}else{var rows=[];sheets.forEach(function(s){rows.push('# '+s.name);rows.push('');s.data.forEach(function(row){rows.push(row.join(','));});rows.push('');});var csv=new TextEncoder().encode(rows.join('\n'));return Promise.resolve({csv:true,data:csv,name:sheets[0].name||'export'})}}
+function saveBlob(b,name){var u=URL.createObjectURL(b instanceof Blob?b:new Blob([b],{type:'application/octet-stream'}));var a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(u)},1e4)}
+
+const ITEMS = [
+{id:'ig-01',name:'Refinish Hardwood Floor',cost:2.35,unit:'sqft',section:'interior',group:'flooring'},
+{id:'ig-02',name:'New Hardwoods 1.5"',cost:10.00,unit:'sqft',section:'interior',group:'flooring'},
+{id:'ig-03',name:'New Hardwoods 2"',cost:4.75,unit:'sqft',section:'interior',group:'flooring'},
+{id:'ig-04',name:'Hardwood Splicing',cost:8.40,unit:'sqft',section:'interior',group:'flooring'},
+{id:'ig-05',name:'Vinyl Plank',cost:2.50,unit:'sqft',section:'interior',group:'flooring'},
+{id:'ig-06',name:'Carpet',cost:1.90,unit:'sqft',section:'interior',group:'flooring'},
+{id:'ig-07',name:'Interior Paint — 2 Tone',cost:2.95,unit:'sqft',section:'interior',group:'paint'},
+{id:'ig-08',name:'Drywall Repair',cost:900.00,unit:'1,000 sqft',section:'interior',group:'paint'},
+{id:'ig-09',name:'Wallpaper Removal',cost:250.00,unit:'room',section:'interior',group:'paint'},
+{id:'ig-10',name:'Interior Door — Hollow Slab',cost:125.00,unit:'ea.',section:'interior',group:'doors'},
+{id:'ig-11',name:'Interior Door Hardware',cost:25.00,unit:'ea.',section:'interior',group:'doors'},
+{id:'ig-12',name:'Bifold Door with Framing',cost:400.00,unit:'ea.',section:'interior',group:'doors'},
+{id:'ig-13',name:'Interior Door — Pre-hung',cost:200.00,unit:'ea.',section:'interior',group:'doors'},
+{id:'ig-14',name:'Front Entry Door',cost:475.00,unit:'ea.',section:'interior',group:'doors'},
+{id:'ig-15',name:'Front Entry Door Hardware',cost:80.00,unit:'ea.',section:'interior',group:'doors'},
+{id:'ig-16',name:'Exterior Door Hardware',cost:75.00,unit:'handle',section:'interior',group:'doors'},
+{id:'ig-17',name:'Ext. Insulated Side Door',cost:500.00,unit:'ea.',section:'interior',group:'doors'},
+{id:'ig-18',name:'Sliding Glass Door',cost:1025.00,unit:'ea.',section:'interior',group:'doors'},
+{id:'ig-19',name:'Trim Out (Casing, Crown, Baseboard)',cost:3.75,unit:'LF',section:'interior',group:'doors'},
+{id:'ig-20',name:'MISC / Punch List',cost:2650.00,unit:'flat',section:'interior',group:'misc'},
+{id:'ig-21',name:'Finish Out Labor',cost:1350.00,unit:'flat',section:'interior',group:'misc'},
+{id:'ig-22',name:'Light Fixtures',cost:70.00,unit:'100 sqft',section:'interior',group:'lighting'},
+{id:'ig-23',name:'Bedbug Spray / Heat Treat',cost:475.00,unit:'ea.',section:'interior',group:'pest'},
+{id:'ig-24',name:'Termite Treatment',cost:650.00,unit:'ea.',section:'interior',group:'pest'},
+{id:'ig-25',name:'Demo',cost:1375.00,unit:'variable',section:'interior',group:'misc'},
+{id:'ig-26',name:'Haul Off',cost:725.00,unit:'load',section:'interior',group:'misc'},
+{id:'ig-27',name:'Final Cleaning',cost:325.00,unit:'flat',section:'interior',group:'misc'},
+{id:'ig-28',name:'Staging',cost:0.90,unit:'sqft',section:'interior',group:'misc'},
+{id:'kt-01',name:'Hinges and Pulls',cost:275.00,unit:'kitchen',section:'kitchen',group:'cabinets'},
+{id:'kt-02',name:'Cabinets Uppers',cost:125.00,unit:'LF',section:'kitchen',group:'cabinets'},
+{id:'kt-03',name:'Cabinets Lowers',cost:150.00,unit:'LF',section:'kitchen',group:'cabinets'},
+{id:'kt-04',name:'Cabinet Door Faces Only',cost:80.00,unit:'door',section:'kitchen',group:'cabinets'},
+{id:'kt-05',name:'Cabinets (Labor & Paint)',cost:1100.00,unit:'kitchen',section:'kitchen',group:'cabinets'},
+{id:'kt-06',name:'Granite + 4" Splash Guard',cost:40.00,unit:'LF',section:'kitchen',group:'countertops'},
+{id:'kt-07',name:'Backsplash',cost:725.00,unit:'house',section:'kitchen',group:'countertops'},
+{id:'kt-08',name:'Misc Woodwork',cost:500.00,unit:'variable',section:'kitchen',group:'countertops'},
+{id:'kt-09',name:'Tile — Large Areas',cost:6.45,unit:'sqft',section:'kitchen',group:'countertops'},
+{id:'kt-10',name:'Tile — Small Areas',cost:10.00,unit:'sqft',section:'kitchen',group:'countertops'},
+{id:'kt-11',name:'Undermount Kitchen Sink',cost:325.00,unit:'ea.',section:'kitchen',group:'appliances'},
+{id:'kt-12',name:'Microwave / Hood',cost:500.00,unit:'ea.',section:'kitchen',group:'appliances'},
+{id:'kt-13',name:'Range',cost:725.00,unit:'ea.',section:'kitchen',group:'appliances'},
+{id:'kt-14',name:'Wall Oven',cost:1075.00,unit:'ea.',section:'kitchen',group:'appliances'},
+{id:'kt-15',name:'Cooktop',cost:550.00,unit:'ea.',section:'kitchen',group:'appliances'},
+{id:'kt-16',name:'Dishwasher',cost:575.00,unit:'ea.',section:'kitchen',group:'appliances'},
+{id:'kt-17',name:'Fridge',cost:1175.00,unit:'ea.',section:'kitchen',group:'appliances'},
+{id:'ba-01',name:'Granite ($/LF)',cost:35.00,unit:'LF',section:'bathrooms',group:'vanity'},
+{id:'ba-02',name:'New Bottom Vanity',cost:125.00,unit:'LF',section:'bathrooms',group:'vanity'},
+{id:'ba-03',name:'Home Depot Vanity w/ Sink',cost:225.00,unit:'ea.',section:'bathrooms',group:'vanity'},
+{id:'ba-04',name:'Toilet',cost:150.00,unit:'ea.',section:'bathrooms',group:'vanity'},
+{id:'ba-05',name:'Tile — Large Areas',cost:5.80,unit:'sqft',section:'bathrooms',group:'tile'},
+{id:'ba-06',name:'Tile — Small Areas',cost:10.00,unit:'sqft',section:'bathrooms',group:'tile'},
+{id:'ba-07',name:'Reglaze Tub or Chemical Clean',cost:350.00,unit:'ea.',section:'bathrooms',group:'tub'},
+{id:'ba-08',name:'Reglaze Tub + Surround',cost:750.00,unit:'ea.',section:'bathrooms',group:'tub'},
+{id:'ba-09',name:'Reglaze Shower',cost:1325.00,unit:'ea.',section:'bathrooms',group:'tub'},
+{id:'ba-10',name:'Tiled Shower Tear Out + Tile',cost:3100.00,unit:'ea.',section:'bathrooms',group:'tub'},
+{id:'ba-11',name:'Tub Tile Surround Tear Out',cost:2250.00,unit:'ea.',section:'bathrooms',group:'tub'},
+{id:'ba-12',name:'Shower Plastic Insert Tear Out',cost:825.00,unit:'ea.',section:'bathrooms',group:'tub'},
+{id:'ba-13',name:'Tub Tear Out + New Insert',cost:1575.00,unit:'ea.',section:'bathrooms',group:'tub'},
+{id:'ba-14',name:'Undermount Sink',cost:150.00,unit:'ea.',section:'bathrooms',group:'vanity'},
+{id:'ba-15',name:'Mirror',cost:200.00,unit:'ea.',section:'bathrooms',group:'vanity'},
+{id:'ba-16',name:'HVL (needed if no window)',cost:275.00,unit:'ea.',section:'bathrooms',group:'vanity'},
+{id:'as-01',name:'Furnace',cost:3350.00,unit:'ea.',section:'systems',group:'hvac'},
+{id:'as-02',name:'Condensing Unit',cost:3300.00,unit:'ea.',section:'systems',group:'hvac'},
+{id:'as-03',name:'Package Unit',cost:4700.00,unit:'ea.',section:'systems',group:'hvac'},
+{id:'as-04',name:'A-Coil',cost:1625.00,unit:'ea.',section:'systems',group:'hvac'},
+{id:'as-05',name:'Ducting (if NO HVAC)',cost:3200.00,unit:'ea.',section:'systems',group:'hvac'},
+{id:'as-06',name:'Duct Cleaning — Floor Vents',cost:550.00,unit:'ea.',section:'systems',group:'hvac'},
+{id:'as-07',name:'Window Unit Replacement 220',cost:575.00,unit:'ea.',section:'systems',group:'hvac'},
+{id:'as-08',name:'Hot Water Heater w/ Expansion Tank',cost:1425.00,unit:'ea.',section:'systems',group:'hvac'},
+{id:'as-09',name:'HWH Expansion Tank Only',cost:200.00,unit:'ea.',section:'systems',group:'hvac'},
+{id:'as-10',name:'Switches / Outlets',cost:1400.00,unit:'house',section:'systems',group:'electrical'},
+{id:'as-11',name:'Standard Electrical',cost:1650.00,unit:'house',section:'systems',group:'electrical'},
+{id:'as-12',name:'Subfloor',cost:8.20,unit:'sqft',section:'systems',group:'structural'},
+{id:'as-13',name:'Framing',cost:950.00,unit:'variable',section:'systems',group:'structural'},
+{id:'as-14',name:'Structural (Pier)',cost:375.00,unit:'pier',section:'systems',group:'structural'},
+{id:'as-15',name:'Structural Foam Injection',cost:5.85,unit:'sqft of affected area',section:'systems',group:'structural'},
+{id:'as-16',name:'Roof',cost:1100.00,unit:'225 sqft L&M',section:'systems',group:'structural'},
+{id:'as-17',name:'Plumbing',cost:1000.00,unit:'variable',section:'systems',group:'structural'},
+{id:'as-18',name:'Electrical Panel Swap 200A',cost:2350.00,unit:'ea.',section:'systems',group:'electrical'},
+{id:'as-19',name:'Full Elec. Rewire (to Studs)',cost:5.65,unit:'sqft',section:'systems',group:'electrical'},
+{id:'as-20',name:'Full Elec. Rewire (leave Drywall)',cost:9.15,unit:'sqft',section:'systems',group:'electrical'},
+{id:'as-21',name:'Wall Insulation (to Studs)',cost:1.20,unit:'sqft',section:'systems',group:'insulation'},
+{id:'as-22',name:'Attic Insulation',cost:1225.00,unit:'1,600 sqft house',section:'systems',group:'insulation'},
+{id:'as-23',name:'New Drywall to Studs (L&M)',cost:5.20,unit:'sqft',section:'systems',group:'insulation'},
+{id:'as-24',name:'Aluminum Wiring',cost:2450.00,unit:'variable',section:'systems',group:'electrical'},
+{id:'ex-01',name:'Fence Repair — Chain Link / Wood Gate',cost:225.00,unit:'variable',section:'exterior',group:'fence'},
+{id:'ex-02',name:'Fence Repair — Chain Link',cost:275.00,unit:'LF',section:'exterior',group:'fence'},
+{id:'ex-03',name:'Fence Repair — Privacy 6ft',cost:30.00,unit:'LF',section:'exterior',group:'fence'},
+{id:'ex-04',name:'Landscaping',cost:450.00,unit:'variable',section:'exterior',group:'landscape'},
+{id:'ex-05',name:'Vinyl Siding (10\'x10\')',cost:300.00,unit:'square',section:'exterior',group:'siding'},
+{id:'ex-06',name:'Tuck Pointing',cost:225.00,unit:'variable',section:'exterior',group:'siding'},
+{id:'ex-07',name:'Exterior Paint',cost:2.60,unit:'sqft',section:'exterior',group:'siding'},
+{id:'ex-08',name:'Exterior Wood Repair',cost:525.00,unit:'variable',section:'exterior',group:'siding'},
+{id:'ex-09',name:'Siding Repair (10\'x10\')',cost:975.00,unit:'section',section:'exterior',group:'siding'},
+{id:'ex-10',name:'Tree Trimming',cost:450.00,unit:'variable',section:'exterior',group:'trees'},
+{id:'ex-11',name:'Tree Removal (w/o stump)',cost:1450.00,unit:'tree',section:'exterior',group:'trees'},
+{id:'ex-12',name:'Stump Grinding',cost:250.00,unit:'stump',section:'exterior',group:'trees'},
+{id:'ex-13',name:'Aluminum Window Paint',cost:700.00,unit:'house',section:'exterior',group:'windows'},
+{id:'ex-14',name:'Windows (3x5 sash)',cost:425.00,unit:'ea.',section:'exterior',group:'windows'},
+{id:'ex-15',name:'Window Repair — Non-Insul.',cost:35.00,unit:'sf',section:'exterior',group:'windows'},
+{id:'ex-16',name:'Window Repair — Insulated',cost:40.00,unit:'sf',section:'exterior',group:'windows'},
+{id:'ex-17',name:'Aluminum Framed Window Pane',cost:100.00,unit:'pane',section:'exterior',group:'windows'},
+{id:'ex-18',name:'Guttering',cost:4.15,unit:'LF',section:'exterior',group:'landscape'},
+{id:'ex-19',name:'Concrete w/ Demo',cost:200.00,unit:'sqft',section:'exterior',group:'landscape'},
+{id:'ex-20',name:'Mowing (summer, every 2 weeks)',cost:45.00,unit:'mowing',section:'exterior',group:'landscape'},
+{id:'ex-21',name:'Garage Door — 1 Car',cost:975.00,unit:'ea.',section:'exterior',group:'garage'},
+{id:'ex-22',name:'Garage Door — 2 Car (Installed)',cost:1225.00,unit:'ea.',section:'exterior',group:'garage'},
+{id:'ex-23',name:'Garage Conversion',cost:8850.00,unit:'ea.',section:'exterior',group:'garage'}
+];
+
+const SECTIONS = [
+{id:'interior',label:'Interior / General',groups:['flooring','paint','doors','pest','misc','lighting']},
+{id:'kitchen',label:'Kitchen',groups:['cabinets','countertops','appliances']},
+{id:'bathrooms',label:'Bathrooms',groups:['vanity','tub','tile']},
+{id:'systems',label:'Systems & Structure',groups:['hvac','electrical','structural','insulation']},
+{id:'exterior',label:'Exterior',groups:['fence','siding','windows','garage','trees','landscape']}
+];
+
+const GROUP_LABELS = {
+flooring:'Flooring',paint:'Paint & Wall Repair',doors:'Doors',pest:'Pest Control',misc:'General / Misc',lighting:'Lighting',
+cabinets:'Cabinets',countertops:'Countertops & Tile',appliances:'Appliances',
+vanity:'Vanity & Countertop',tub:'Tub & Shower',tile:'Tile',
+hvac:'HVAC',electrical:'Electrical',structural:'Structural',insulation:'Insulation & Drywall',
+fence:'Fence',siding:'Siding',windows:'Windows',garage:'Garage',trees:'Trees',landscape:'Landscaping & Concrete',
+closet:'Closet'
+};
+
+const ROOM_TYPES = {
+bathroom:{label:'Bathroom',groups:['vanity','tub','tile']},
+bedroom:{label:'Bedroom',groups:['flooring','paint','doors','closet']},
+living:{label:'Living / Common',groups:['flooring','paint','doors','lighting']},
+kitchen:{label:'Kitchen',groups:['cabinets','countertops','appliances']}
+};
+
+const VIRTUAL_GROUPS = {
+closet:{source:'doors',msg:'Closet repairs (doors, hardware, organization)'}
+};
+
+const ITEMS_BY_GROUP = {};
+ITEMS.forEach(it=>{if(!ITEMS_BY_GROUP[it.group])ITEMS_BY_GROUP[it.group]=[];ITEMS_BY_GROUP[it.group].push(it)});
+
+let state = {projects:{},currentId:null,activeTab:'items',globalPrices:{}};
+let currentProject = null;
+let photoDB = null;
+let _lastFocus = null;
+
+function openDB(){
+return new Promise((res,rej)=>{
+const r=indexedDB.open('SparkPhotos',1);
+r.onupgradeneeded=e=>{const db=e.target.result;if(!db.objectStoreNames.contains('photos'))db.createObjectStore('photos',{keyPath:'id'})};
+r.onsuccess=e=>{photoDB=e.target.result;res(photoDB)};
+r.onerror=e=>{photoDB=null;res(null)};
+});
+}
+
+function dbPut(id,data){
+return new Promise((res,rej)=>{
+if(!photoDB){toast('Photo storage unavailable');res(false);return}
+try{
+const tx=photoDB.transaction('photos','readwrite');
+tx.objectStore('photos').put({id,data});
+tx.oncomplete=()=>res(true);
+tx.onerror=()=>{toast('Failed to save photo');res(false)};
+}catch(e){toast('Photo save error');res(false)}
+});
+}
+
+function dbGet(id){
+return new Promise((res,rej)=>{
+if(!photoDB){res(null);return}
+try{
+const tx=photoDB.transaction('photos','readonly');
+const req=tx.objectStore('photos').get(id);
+req.onsuccess=()=>res(req.result?req.result.data:null);
+req.onerror=()=>res(null);
+}catch(e){res(null)}
+});
+}
+
+function dbDelete(id){
+return new Promise((res,rej)=>{
+if(!photoDB){res(false);return}
+try{
+const tx=photoDB.transaction('photos','readwrite');
+tx.objectStore('photos').delete(id);
+tx.oncomplete=()=>res(true);
+tx.onerror=()=>res(false);
+}catch(e){res(false)}
+});
+}
+
+if('indexedDB' in window)openDB().catch(()=>{});
+
+function loadState(){
+try{
+const s = localStorage.getItem('sparkState');
+if(s){state=JSON.parse(s);if(!state.globalPrices)state.globalPrices={};if(!state.activeTab)state.activeTab='items'}
+if(state.projects){Object.values(state.projects).forEach(p=>{if(!p.dealState)p.dealState={}})}
+}catch(e){}
+}
+
+function saveState(){
+try{localStorage.setItem('sparkState',JSON.stringify(state))}catch(e){}
+}
+
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+
+function getItemCost(itemId){
+if(currentProject && currentProject.priceOverrides && currentProject.priceOverrides[itemId]!==undefined)
+return currentProject.priceOverrides[itemId];
+if(state.globalPrices[itemId]!==undefined)return state.globalPrices[itemId];
+const item=ITEMS.find(i=>i.id===itemId);
+return item?item.cost:0;
+}
+
+function createProject(name){
+const id=uid();
+const proj={
+id,name,createdAt:Date.now(),updatedAt:Date.now(),
+rooms:[],roomCounts:{bathroom:0,bedroom:0,living:0,kitchen:0},
+items:{},customItems:[],photos:[],notes:'',priceOverrides:{},dealState:{}
+};
+ITEMS.forEach(it=>{proj.items[it.id]={qty:1,checked:false}});
+state.projects[id]=proj;
+state.currentId=id;
+saveState();
+return proj;
+}
+
+function getProject(){return state.projects[state.currentId]||null}
+
+function itemStateKey(itemId,roomId){return roomId?roomId+'::'+itemId:itemId}
+
+function getItemState(proj,itemId,roomId){
+const key=itemStateKey(itemId,roomId);
+if(!proj.items[key])proj.items[key]={qty:1,checked:false};
+return proj.items[key];
+}
+
+function getTotal(proj){
+if(!proj)return 0;
+let total=0;
+Object.entries(proj.items).forEach(([key,it])=>{
+if(it.checked){
+const itemId=key.includes('::')?key.split('::')[1]:key;
+const cost=getItemCost(itemId);
+total+=cost*(it.qty||1);
+}
+});
+proj.customItems.forEach(it=>{if(it.checked)total+=it.cost*(it.qty||1)});
+return total;
+}
+
+function countGroups(proj){
+if(!proj)return{complete:0,total:0};
+const roomGroups=getAllRoomGroups(proj);
+let total=roomGroups.length;
+let complete=0;
+roomGroups.forEach(rg=>{
+const items=getItemsForGroup(rg);
+if(items.length===0){complete++;return}
+const checked=items.some(it=>{
+if(it._custom)return it.checked;
+const st=getItemState(proj,it.id,rg.roomId);
+return st.checked;
+});
+if(checked)complete++;
+});
+return{complete,total};
+}
+
+function getAllRoomGroups(proj){
+if(!proj)return[];
+const groups=[];
+SECTIONS.forEach(sec=>{sec.groups.forEach(g=>{groups.push({type:'core',sectionId:sec.id,groupId:g,label:GROUP_LABELS[g]||g,prefix:''})})});
+proj.rooms.forEach(room=>{
+const rt=ROOM_TYPES[room.type];
+if(rt){rt.groups.forEach(g=>{groups.push({type:'room',roomId:room.id,sectionId:room.type,groupId:g,label:GROUP_LABELS[g]||g,prefix:room.label+': '})})}
+});
+return groups;
+}
+
+function getItemsForGroup(rg){
+const items=ITEMS_BY_GROUP[rg.groupId];
+if(items)return items.map(it=>({...it}));
+const virt=VIRTUAL_GROUPS[rg.groupId];
+if(virt&&virt.source){
+const src=ITEMS_BY_GROUP[virt.source];
+if(src)return src.map(it=>({...it}));
+}
+return [];
+}
+
+function isGroupNoAction(proj,rg){
+return proj._noAction && proj._noAction[rg.sectionId+'_'+rg.groupId+(rg.roomId||'')]===true;
+}
+
+function setGroupNoAction(proj,rg,val){
+if(!proj._noAction)proj._noAction={};
+proj._noAction[rg.sectionId+'_'+rg.groupId+(rg.roomId||'')]=val;
+}
+
+const $=id=>document.getElementById(id);
+
+function render(keepScroll){
+const proj=getProject();
+if(!proj){
+$('projectListView').style.display='block';
+$('projectView').style.display='none';
+$('photoView').style.display='none';
+$('settingsView').style.display='none';
+$('tabBar').style.display='none';
+$('bottomBar').style.display='none';
+$('topProgressBar').style.display='none';
+$('progressText').style.display='none';
+$('backBtn').style.display='none';
+$('appTitle').textContent='Spark Estimator';
+renderProjectList();
+return;
+}
+currentProject=proj;
+$('projectListView').style.display='none';
+$('projectView').style.display='block';
+$('tabBar').style.display='flex';
+$('bottomBar').style.display='flex';
+$('topProgressBar').style.display='block';
+$('progressText').style.display='block';
+$('backBtn').style.display='block';
+$('appTitle').textContent=proj.name;
+
+const pc=countGroups(proj);
+const pct=pc.total>0?Math.round(pc.complete/pc.total*100):0;
+$('progressFill').style.width=pct+'%';
+$('topProgressBar').setAttribute('aria-valuenow',pct);
+$('progressText').textContent=pc.complete+' / '+pc.total+' groups complete';
+$('grandTotal').textContent=Math.round(getTotal(proj)).toLocaleString();
+$('photoCount').textContent=(proj.photos||[]).length;
+
+if(!keepScroll)$('projectView').scrollTop=0;
+const tab=$('tabBar').querySelector('.tab.active');
+if(tab)switchTab(tab.dataset.tab);
+else switchTab('items');
+}
+
+function renderProjectList(){
+const container=$('projectList');
+const ids=Object.keys(state.projects);
+if(ids.length===0){
+container.innerHTML='<div class="empty-state"><h2>No projects yet</h2><p>Create your first repair estimate to get started.</p></div>';
+return;
+}
+container.innerHTML=ids.map(id=>{
+const p=state.projects[id];const t=getTotal(p);
+return '<div class="card project-item" style="padding:16px;margin:8px 12px" data-action="open-project" data-id="'+id+'">'+
+'<div style="display:flex;justify-content:space-between;align-items:center">'+
+'<div><div style="font-weight:600;font-size:15px">'+escHtml(p.name)+'</div>'+
+'<div style="font-size:12px;color:var(--slate-600);margin-top:2px">'+new Date(p.createdAt).toLocaleDateString()+'</div></div>'+
+'<div style="text-align:right"><div style="font-weight:700;font-size:16px">$'+Math.round(t).toLocaleString()+'</div>'+
+'<button class="btn btn-danger btn-sm" data-action="delete-project" data-id="'+id+'" style="margin-top:4px">Delete</button></div></div></div>';
+}).join('');
+}
+
+function escHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+
+function openProject(id){
+state.currentId=id;saveState();render();
+}
+
+function deleteProject(id){
+if(!confirm('Delete this project? All estimate data will be lost.'))return;
+const el=$('projectList').querySelector('[data-action="delete-project"][data-id="'+id+'"]');
+if(el){const card=el.closest('.project-item');if(card)card.classList.add('deleting')}
+setTimeout(()=>{
+(async()=>{
+const proj=state.projects[id];
+if(proj&&proj.photos){for(const p of proj.photos){if(p.idbKey)await dbDelete(p.idbKey)}}
+delete state.projects[id];
+if(state.currentId===id)state.currentId=null;
+saveState();
+renderProjectList();
+})();
+},250);
+}
+
+function switchTab(tab){
+state.activeTab=tab;
+$('projectView').style.display=tab==='photos'||tab==='settings'?'none':'block';
+$('photoView').style.display=tab==='photos'?'block':'none';
+$('settingsView').style.display=tab==='settings'?'block':'none';
+$('tabBar').querySelectorAll('.tab').forEach(t=>{const a=t.classList.toggle('active',t.dataset.tab===tab);t.setAttribute('aria-selected',a)});
+if(tab==='photos')renderPhotos();
+if(tab==='settings')renderSettings();
+if(tab==='analyzer')renderDealAnalyzer();
+if(tab==='items')renderItems();
+}
+
+function renderItems(){
+const proj=getProject();
+if(!proj)return;
+const container=$('sectionsContainer');
+const groups=getAllRoomGroups(proj);
+let html='';
+
+html+='<div style="display:flex;gap:4px;flex-wrap:wrap;padding:4px 12px 0">'+
+'<span class="room-chip" data-action="show-rooms" style="border-style:dashed;border-color:var(--amber)">+ Add Room</span>'+
+proj.rooms.map(r=>'<span class="room-chip" data-action="edit-room" data-id="'+r.id+'">'+escHtml(r.label)+
+' <span class="del-chip" data-action="remove-room" data-id="'+r.id+'" role="button" aria-label="Remove '+escHtml(r.label)+'">&#10005;</span></span>').join('')+'</div>';
+
+const sectionTotals={};
+SECTIONS.forEach(sec=>{sectionTotals[sec.id]=0});
+groups.forEach(rg=>{const items=getItemsForGroup(rg);items.forEach(it=>{const st=getItemState(proj,it.id,rg.roomId);if(st.checked)sectionTotals[rg.sectionId]+=getItemCost(it.id)*(st.qty||1)});});
+proj.customItems.forEach(it=>{if(it.checked){for(const sec of SECTIONS){if(sec.groups.includes(it.groupId)){sectionTotals[sec.id]+=it.cost*(it.qty||1);break}}}});
+
+groups.forEach((rg)=>{
+const groupKey=rg.sectionId+'_'+rg.groupId+(rg.roomId||'');
+const noAction=isGroupNoAction(proj,rg);
+const virt=VIRTUAL_GROUPS[rg.groupId];
+
+html+='<div class="card">';
+html+='<div class="card-header" data-action="toggle-group" data-key="'+groupKey+'" role="button" tabindex="0" aria-expanded="false">';
+if(!noAction&&proj.items){
+const idPrefix=rg.roomId?rg.roomId+'::':'';
+const someChecked=(ITEMS_BY_GROUP[rg.groupId]||(virt&&ITEMS_BY_GROUP[virt.source])||[]).some(it=>proj.items[idPrefix+it.id]?.checked);
+html+='<span class="badge '+(someChecked?'badge-green':'badge-gray')+'">'+(someChecked?'&#10003;':'')+'</span>';
+}
+if(noAction){html+='<span class="badge badge-amber">No Action</span>'}
+html+='<h3>'+escHtml((rg.prefix||'')+rg.label)+'</h3>';
+html+='<span class="arrow" id="arrow_'+groupKey+'">&#9660;</span>';
+html+='</div>';
+html+='<div class="group-content" id="group_'+groupKey+'" role="region">';
+
+html+='<div class="no-action"><input type="checkbox" '+(noAction?'checked':'')+' data-action="no-action" data-key="'+groupKey+'" id="na_'+groupKey+'"'+
+'><label for="na_'+groupKey+'" style="font-size:13px">No Action Needed — Group Reviewed</label></div>';
+
+const items=getItemsForGroup(rg);
+if(virt&&items.length>0){
+html+='<div style="padding:8px 16px;font-size:12px;color:var(--slate-600);background:var(--slate-100);border-bottom:1px solid var(--slate-200)">'+escHtml(virt.msg||'')+'</div>';
+}
+
+items.forEach(it=>{
+const st=getItemState(proj,it.id,rg.roomId);
+const cost=getItemCost(it.id);
+const lineTotal=cost*(st.qty||1);
+const hasOverride=state.globalPrices[it.id]!==undefined||(proj.priceOverrides[it.id]!==undefined);
+const rowKey=itemStateKey(it.id,rg.roomId).replace(/[^a-zA-Z0-9]/g,'_');
+html+='<div class="item-row '+(st.checked?'selected':'')+'" id="row_'+rowKey+'">';
+html+='<div style="display:flex;align-items:center;gap:8px;min-width:0">'+
+'<input type="checkbox" '+(st.checked?'checked':'')+' data-action="toggle-item" data-id="'+it.id+'" data-room="'+(rg.roomId||'')+'" id="ci_'+groupKey+'_'+it.id+'">'+
+'<label for="ci_'+groupKey+'_'+it.id+'" style="display:flex;flex-direction:column;flex:1;min-width:0;cursor:pointer"><div class="item-name">'+escHtml(it.name)+'</div><div class="item-unit">'+escHtml(it.unit)+'</div></label></div>';
+html+='<div class="item-qty"><input type="number" min="0" step="1" value="'+(st.qty||1)+'" data-action="set-qty" data-id="'+it.id+'" data-room="'+(rg.roomId||'')+'" inputmode="numeric"></div>';
+html+='<div class="item-cost" style="position:relative">'+
+'<input class="price-input" type="number" min="0" step="0.01" value="'+cost.toFixed(2)+'" data-action="set-price" data-id="'+it.id+'" data-room="'+(rg.roomId||'')+'" inputmode="decimal">'+
+(hasOverride?'<span class="override-badge">*</span>':'')+
+'</div>';
+html+='<div class="item-total" id="tot_'+rowKey+'">$'+lineTotal.toFixed(0)+'</div></div>';
+});
+
+if(items.length===0&&!virt){
+html+='<div style="padding:16px;text-align:center;font-size:13px;color:var(--slate-600)">'+
+'No predefined items. Add custom items for this area.'+
+'</div>';
+}
+
+if(virt&&items.length===0){
+html+='<div style="padding:16px;text-align:center;font-size:13px;color:var(--slate-600)">No items available for this group.</div>';
+}
+
+const cItems=proj.customItems.filter(ci=>ci.groupId===rg.groupId&&ci.sectionId===rg.sectionId&&(ci.roomId||null)===(rg.roomId||null));
+cItems.forEach((it,i)=>{
+const gt=it.cost*(it.qty||1);
+const origIdx=proj.customItems.indexOf(it);
+html+='<div class="item-row '+(it.checked?'selected':'')+'" style="background:#fefce8">';
+html+='<div style="display:flex;align-items:center;gap:8px;min-width:0">'+
+'<input type="checkbox" '+(it.checked?'checked':'')+' data-action="toggle-custom" data-index="'+origIdx+'" id="cc_'+origIdx+'">'+
+'<label for="cc_'+origIdx+'" style="display:flex;flex-direction:column;flex:1;min-width:0;cursor:pointer"><div class="item-name">'+escHtml(it.name)+' <span style="font-size:10px;color:var(--amber)">(custom)</span></div>'+
+'<div class="item-unit">'+escHtml(it.unit||'ea.')+'</div></label></div>';
+html+='<div class="item-qty"><input type="number" min="0" step="1" value="'+(it.qty||1)+'" data-action="set-custom-qty" data-index="'+origIdx+'" inputmode="numeric"></div>';
+html+='<div class="item-cost"><input class="price-input" type="number" min="0" step="0.01" value="'+it.cost.toFixed(2)+'" data-action="set-custom-price" data-index="'+origIdx+'" inputmode="decimal"></div>';
+html+='<div class="item-total" style="display:flex;align-items:center;gap:4px">$'+gt.toFixed(0)+
+'<button class="btn btn-danger btn-sm" style="padding:2px 6px;font-size:10px" data-action="delete-custom" data-index="'+origIdx+'" aria-label="Delete '+escHtml(it.name)+'">&#10005;</button></div></div>';
+});
+
+html+='<div style="padding:8px 16px;text-align:center">'+
+'<button class="btn btn-ghost btn-sm" data-action="add-custom" data-section="'+rg.sectionId+'" data-group="'+rg.groupId+'" data-room="'+(rg.roomId||'')+'">+ Add Custom Item</button></div>';
+html+='</div></div>';
+});
+
+html+='<div class="card" style="overflow:visible"><div class="card-header" data-action="toggle-group" data-key="_summary" role="button" tabindex="0" aria-expanded="false">';
+html+='<h3 style="font-size:14px">&#128202; Cost Breakdown</h3>';
+html+='<span class="arrow" id="arrow__summary">&#9660;</span></div>';
+html+='<div class="group-content" id="group__summary">';
+SECTIONS.forEach(sec=>{
+const st=sectionTotals[sec.id];
+html+='<div class="summary-section"><span class="ss-label">'+escHtml(sec.label)+'</span><span class="ss-value" id="sum_'+sec.id+'">$'+Math.round(st).toLocaleString()+'</span></div>';
+});
+html+='<div class="summary-section"><span class="ss-label">Total</span><span class="ss-value" id="sum_total">$'+Math.round(getTotal(proj)).toLocaleString()+'</span></div>';
+html+='</div></div>';
+
+container.innerHTML=html;
+if(!window._groupStates)window._groupStates={};
+groups.forEach(rg=>{
+const key=rg.sectionId+'_'+rg.groupId+(rg.roomId||'');
+const el=$('group_'+key);const arrow=$('arrow_'+key);
+if(el&&window._groupStates[key]){el.classList.add('open');if(arrow)arrow.classList.add('open');const hdr=el.previousElementSibling;if(hdr)hdr.setAttribute('aria-expanded','true')}
+});
+const sumEl=$('group__summary');const sumArrow=$('arrow__summary');
+if(sumEl&&window._groupStates&&window._groupStates['_summary']){sumEl.classList.add('open');if(sumArrow)sumArrow.classList.add('open');}
+_lastFocus=null;
+}
+
+function toggleGroup(key){
+const el=$('group_'+key);const arrow=$('arrow_'+key);
+if(!el)return;
+const opening=!el.classList.contains('open');
+el.classList.toggle('open');if(arrow)arrow.classList.toggle('open');
+if(!window._groupStates)window._groupStates={};
+window._groupStates[key]=el.classList.contains('open');
+const hdr=el.previousElementSibling;
+if(hdr)hdr.setAttribute('aria-expanded',opening);
+}
+
+function updateUI(){
+const proj=getProject();
+if(!proj)return;
+const pc=countGroups(proj);
+const pct=pc.total>0?Math.round(pc.complete/pc.total*100):0;
+$('progressFill').style.width=pct+'%';
+$('topProgressBar').setAttribute('aria-valuenow',pct);
+$('progressText').textContent=pc.complete+' / '+pc.total+' groups complete';
+const gt=Math.round(getTotal(proj)).toLocaleString();
+$('grandTotal').textContent=gt;
+const sumTotal=$('sum_total');
+if(sumTotal)sumTotal.textContent='$'+gt;
+SECTIONS.forEach(sec=>{
+const el=$('sum_'+sec.id);
+if(!el)return;
+let total=0;
+const groups=getAllRoomGroups(proj);
+groups.forEach(rg=>{if(rg.sectionId===sec.id){const items=getItemsForGroup(rg);items.forEach(it=>{const st=getItemState(proj,it.id,rg.roomId);if(st.checked)total+=getItemCost(it.id)*(st.qty||1)})}});
+proj.customItems.forEach(it=>{if(it.checked&&sec.groups.includes(it.groupId))total+=it.cost*(it.qty||1)});
+el.textContent='$'+Math.round(total).toLocaleString();
+});
+}
+
+function toggleItem(id,roomId,checked){
+const proj=getProject();if(!proj)return;
+const st=getItemState(proj,id,roomId);st.checked=checked;
+proj.updatedAt=Date.now();saveState();
+const row=$('row_'+itemStateKey(id,roomId).replace(/[^a-zA-Z0-9]/g,'_'));
+if(row)row.classList.toggle('selected',checked);
+const prefix=roomId?roomId+'::':'';
+updateGroupBadge(findGroupKey(proj,id,roomId));
+updateUI();
+}
+
+function setQty(id,roomId,val){
+const proj=getProject();if(!proj)return;
+const st=getItemState(proj,id,roomId);st.qty=Math.max(0,parseFloat(val)||0);
+proj.updatedAt=Date.now();saveState();
+const cost=getItemCost(id);
+const totalEl=$('tot_'+itemStateKey(id,roomId).replace(/[^a-zA-Z0-9]/g,'_'));
+if(totalEl)totalEl.textContent='$'+(cost*st.qty).toFixed(0);
+updateUI();
+}
+
+function setPrice(id,roomId,val){
+const proj=getProject();if(!proj)return;
+proj.priceOverrides[id]=Math.max(0,parseFloat(val)||0);
+proj.updatedAt=Date.now();saveState();
+const cost=getItemCost(id);
+const prefix=roomId?roomId+'::':'';
+Object.keys(proj.items).forEach(k=>{
+const itemId=k.includes('::')?k.split('::')[1]:k;
+if(itemId===id){
+const st=proj.items[k];
+const totalEl=$('tot_'+k.replace(/[^a-zA-Z0-9]/g,'_'));
+if(totalEl)totalEl.textContent='$'+(cost*st.qty).toFixed(0);
+}
+});
+updateUI();
+}
+
+function toggleNoAction(key,val){
+const proj=getProject();if(!proj)return;
+const parts=key.split('_');const sectionId=parts[0],groupId=parts[1],roomId=parts.slice(2).join('_');
+const rg={sectionId,groupId,roomId};
+setGroupNoAction(proj,rg,val);proj.updatedAt=Date.now();saveState();
+renderItems();
+}
+
+function findGroupKey(proj,itemId,roomId){
+const groups=getAllRoomGroups(proj);
+for(const rg of groups){
+const items=getItemsForGroup(rg);
+if(items.some(it=>it.id===itemId))return rg.sectionId+'_'+rg.groupId+(rg.roomId||'');
+}
+return roomId?'room_'+roomId:'core_'+itemId;
+}
+
+function updateGroupBadge(groupKey){
+if(!groupKey)return;
+const hdr=document.querySelector('[data-action="toggle-group"][data-key="'+groupKey+'"]');
+if(!hdr)return;
+const proj=getProject();if(!proj)return;
+const parts=groupKey.split('_');const sectionId=parts[0],groupId=parts[1],roomId=parts.slice(2).join('_');
+const rg={sectionId,groupId,roomId};
+const noAction=isGroupNoAction(proj,rg);
+const virt=VIRTUAL_GROUPS[rg.groupId];
+const prefix=rg.roomId?rg.roomId+'::':'';
+const someChecked=(ITEMS_BY_GROUP[rg.groupId]||(virt&&ITEMS_BY_GROUP[virt.source])||[]).some(it=>proj.items[prefix+it.id]?.checked);
+const badge=hdr.querySelector('.badge');
+if(badge&&!noAction){
+badge.className='badge '+(someChecked?'badge-green':'badge-gray');
+badge.innerHTML=someChecked?'&#10003;':'';
+}
+const noBadge=hdr.querySelector('.badge-amber');
+if(noAction&&!noBadge){
+const nb=document.createElement('span');
+nb.className='badge badge-amber';nb.textContent='No Action';
+hdr.insertBefore(nb,hdr.querySelector('h3'));
+}
+}
+
+let _rafId=null;
+function rafRender(){if(_rafId)cancelAnimationFrame(_rafId);_rafId=requestAnimationFrame(()=>{_rafId=null;render(true)})}
+
+function showRoomModal(){
+const proj=getProject();if(!proj)return;
+let html='<h2 id="modalTitle">Add Room</h2><label for="roomTypeSelect">Room Type</label><select id="roomTypeSelect">';
+for(const[key,rt]of Object.entries(ROOM_TYPES)){html+='<option value="'+key+'">'+escHtml(rt.label)+'</option>'}
+html+='</select><div class="btn-row"><button class="btn btn-secondary" data-action="close-modal">Cancel</button>';
+html+='<button class="btn btn-primary" data-action="add-room">Add Room</button></div>';
+showModal(html);
+setTimeout(()=>$('roomTypeSelect')?.focus(),100);
+}
+
+function addRoom(){
+const type=$('roomTypeSelect').value;
+const proj=getProject();if(!proj)return;
+if(!proj.roomCounts)proj.roomCounts={bathroom:0,bedroom:0,living:0,kitchen:0};
+proj.roomCounts[type]=(proj.roomCounts[type]||0)+1;
+const num=proj.roomCounts[type];
+const rt=ROOM_TYPES[type];const id=uid();
+proj.rooms.push({id,type,label:rt.label+' '+num});
+proj.updatedAt=Date.now();saveState();closeModal();render();
+}
+
+function removeRoom(id){
+if(!confirm('Remove this room and its repair items?'))return;
+const proj=getProject();if(!proj)return;
+const room=proj.rooms.find(r=>r.id===id);
+if(room){Object.keys(proj.items).forEach(k=>{if(k.startsWith(room.id+'::'))delete proj.items[k]})}
+proj.rooms=proj.rooms.filter(r=>r.id!==id);
+proj.updatedAt=Date.now();saveState();render();
+}
+
+function editRoom(id){
+const proj=getProject();if(!proj)return;
+const room=proj.rooms.find(r=>r.id===id);if(!room)return;
+let html='<h2 id="modalTitle">Edit Room</h2><label for="roomLabelInput">Room Label</label><input type="text" id="roomLabelInput" value="'+escHtml(room.label)+'">';
+html+='<div class="btn-row"><button class="btn btn-secondary" data-action="close-modal">Cancel</button>';
+html+='<button class="btn btn-primary" data-action="save-room-label" data-id="'+id+'">Save</button></div>';
+showModal(html);
+setTimeout(()=>{$('roomLabelInput')?.focus();$('roomLabelInput')?.select()},100);
+}
+
+function saveRoomLabel(id){
+const proj=getProject();if(!proj)return;
+const room=proj.rooms.find(r=>r.id===id);if(!room)return;
+room.label=$('roomLabelInput').value||room.label;
+proj.updatedAt=Date.now();saveState();closeModal();render();
+}
+
+function showAddItemModal(sectionId,groupId,roomId){
+let html='<h2 id="modalTitle">Add Custom Item</h2><label for="customItemName">Item Name</label><input type="text" id="customItemName" placeholder="e.g., Custom Closet Shelving">';
+html+='<label for="customItemUnit">Unit</label><input type="text" id="customItemUnit" placeholder="ea., sqft, LF" value="ea.">';
+html+='<label for="customItemCost">Unit Cost ($)</label><input type="number" id="customItemCost" placeholder="0.00" step="0.01" inputmode="decimal">';
+html+='<div class="btn-row"><button class="btn btn-secondary" data-action="close-modal">Cancel</button>';
+html+='<button class="btn btn-primary" data-action="add-custom-item" data-section="'+sectionId+'" data-group="'+groupId+'" data-room="'+roomId+'">Add Item</button></div>';
+showModal(html);
+setTimeout(()=>{$('customItemName')?.focus()},100);
+}
+
+function addCustomItem(sectionId,groupId,roomId){
+const proj=getProject();if(!proj)return;
+const name=$('customItemName').value.trim();const unit=$('customItemUnit').value.trim()||'ea.';
+const cost=parseFloat($('customItemCost').value)||0;
+if(!name){toast('Enter an item name');return}
+proj.customItems.push({id:uid(),name,unit,cost,qty:1,checked:false,sectionId,groupId,roomId:roomId||null});
+proj.updatedAt=Date.now();saveState();closeModal();render();
+}
+
+function deleteCustomItem(index){
+const proj=getProject();if(!proj)return;
+proj.customItems.splice(index,1);proj.updatedAt=Date.now();saveState();render();
+}
+
+function toggleCustomItem(index,checked){
+const proj=getProject();if(!proj)return;
+if(proj.customItems[index])proj.customItems[index].checked=checked;
+proj.updatedAt=Date.now();saveState();rafRender();
+}
+
+function setCustomQty(index,val){
+const proj=getProject();if(!proj)return;
+if(proj.customItems[index])proj.customItems[index].qty=Math.max(0,parseFloat(val)||0);
+proj.updatedAt=Date.now();saveState();rafRender();
+}
+
+function setCustomPrice(index,val){
+const proj=getProject();if(!proj)return;
+if(proj.customItems[index])proj.customItems[index].cost=Math.max(0,parseFloat(val)||0);
+proj.updatedAt=Date.now();saveState();rafRender();
+}
+
+function compressImage(dataUrl,maxW=1024,quality=0.7){
+return new Promise(resolve=>{
+const img=new Image();
+img.onload=()=>{
+let w=img.width,h=img.height;
+if(w>maxW){h*=maxW/w;w=maxW}
+if(h>maxW){w*=maxW/h;h=maxW}
+const c=document.createElement('canvas');c.width=w;c.height=h;
+const ctx=c.getContext('2d');ctx.drawImage(img,0,0,w,h);
+resolve(c.toDataURL('image/jpeg',quality));
+};
+img.src=dataUrl;
+});
+}
+
+function compressImageSmall(dataUrl){return compressImage(dataUrl,800,0.6)}
+
+function parseSerialFromName(name){
+const patterns=[/(?:SN|S\/N|SERIAL)[:\s]*([A-Z0-9][A-Z0-9\-]{4,})/i,/([A-Z]{2}\d{6,})/,/(\d{6,}[A-Z]{2,})/];
+for(const p of patterns){const m=name.match(p);if(m)return m[1];}
+return null;
+}
+
+async function renderPhotos(){
+const proj=getProject();if(!proj)return;
+const grid=$('photoGrid');
+const photos=proj.photos||[];
+if(photos.length===0){
+grid.innerHTML='<div class="empty-state" style="grid-column:1/-1"><h2>No photos yet</h2><p>Take photos of serial numbers, damage, or any item needing attention.</p></div>';
+return;
+}
+let html='';
+for(let i=0;i<photos.length;i++){
+const p=photos[i];
+const sn=p.serial||'';
+const detected=!sn&&p.name?parseSerialFromName(p.name):null;
+let src=p.data;
+if(!src&&p.idbKey){
+src=await dbGet(p.idbKey);
+}
+html+='<div>'+
+'<div class="photo-item" data-index="'+i+'"><img src="'+(src||'')+'" alt="Photo '+(i+1)+'" loading="lazy">'+
+'<button class="del-photo" data-action="delete-photo" data-index="'+i+'" aria-label="Delete photo '+(i+1)+'">&#10005;</button>'+
+'<span class="swipe-hint">&#8592; swipe to delete</span></div>'+
+'<div style="padding:4px 0"><input type="text" placeholder="Serial #" value="'+escHtml(sn)+'" '+
+'data-action="photo-serial" data-index="'+i+'" '+
+'style="width:100%;padding:4px 6px;border:1px solid var(--slate-200);border-radius:4px;font-size:11px;text-align:center;box-sizing:border-box">'+
+(detected?'<div style="font-size:10px;color:var(--green);text-align:center">Detected: '+escHtml(detected)+'</div>':'')+
+'</div></div>';
+}
+grid.innerHTML=html;
+}
+
+let _swiping=null;
+function initPhotoSwipe(){
+const grid=$('photoGrid');
+if(!grid)return;
+grid.querySelectorAll('.photo-item').forEach(el=>{
+let startX=0,currentX=0,isDragging=false;
+const onStart=function(e){const t=e.touches?e.touches[0]:e;startX=t.clientX;currentX=0;isDragging=true;el.style.transition='none'};
+const onMove=function(e){if(!isDragging)return;const t=e.touches?e.touches[0]:e;currentX=t.clientX-startX;if(currentX<0)el.style.transform='translateX('+currentX+'px)'};
+const onEnd=function(){if(!isDragging)return;isDragging=false;el.style.transition='transform .3s ease,opacity .3s ease';if(currentX<-80){el.classList.add('deleting');const idx=parseInt(el.dataset.index);setTimeout(()=>{if(!isNaN(idx)){const proj=getProject();if(proj&&proj.photos&&proj.photos[idx]){removePhoto(idx)}}},300)}else{el.style.transform=''}};
+el.addEventListener('touchstart',onStart,{passive:true});
+el.addEventListener('touchmove',onMove,{passive:true});
+el.addEventListener('touchend',onEnd);
+el.addEventListener('mousedown',onStart);
+el.addEventListener('mousemove',onMove);
+el.addEventListener('mouseup',onEnd);
+el.addEventListener('mouseleave',function(e){if(isDragging&&currentX<0)onEnd()});
+});
+}
+
+function confirmDeletePhoto(idx){
+if(!confirm('Remove this photo?'))return;removePhoto(idx);
+}
+
+function setPhotoSerial(idx,val){
+const proj=getProject();if(!proj)return;
+if(proj.photos&&proj.photos[idx]){proj.photos[idx].serial=val.trim()||null;proj.updatedAt=Date.now();saveState()}
+}
+
+async function removePhoto(idx){
+const proj=getProject();if(!proj)return;
+const p=proj.photos[idx];
+if(p&&p.idbKey)await dbDelete(p.idbKey);
+proj.photos.splice(idx,1);
+proj.updatedAt=Date.now();saveState();
+renderPhotos();$('photoCount').textContent=proj.photos.length;
+initPhotoSwipe();
+}
+
+function renderSettings(){
+const container=$('globalPricesList');
+let html='';
+let hasOverrides=false;
+ITEMS.forEach(it=>{
+const val=state.globalPrices[it.id]!==undefined?state.globalPrices[it.id]:it.cost;
+const ov=state.globalPrices[it.id]!==undefined;
+if(ov)hasOverrides=true;
+html+='<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--slate-100);font-size:13px">'+
+'<div style="flex:1;min-width:0"><div style="font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+escHtml(it.name)+'</div>'+
+'<div style="font-size:11px;color:var(--slate-600)">Default: $'+it.cost.toFixed(2)+'/'+escHtml(it.unit)+'</div></div>'+
+'<input type="number" step="0.01" value="'+val.toFixed(2)+'" data-action="set-global-price" data-id="'+it.id+'" '+
+'style="width:80px;padding:4px 6px;border:1px solid '+(ov?'var(--amber)':'var(--slate-200)')+';border-radius:6px;font-size:13px;text-align:right" inputmode="decimal">'+
+(ov?'<span style="color:var(--amber);font-size:16px">*</span>':'')+'</div>';
+});
+if(!hasOverrides){
+html='<p style="font-size:13px;color:var(--slate-600);text-align:center;padding:20px 0">No global overrides set. Edit prices above to override.</p>';
+}
+container.innerHTML=html;
+}
+
+function setGlobalPrice(id,val){
+state.globalPrices[id]=Math.max(0,parseFloat(val)||0);
+saveState();renderSettings();rafRender();
+}
+
+function renderDealAnalyzer(){
+$('dealAnalyzer').style.display='block';
+const proj=getProject();if(!proj)return;
+const total=getTotal(proj);
+
+const ds=proj.dealState||{};
+$('arvInput').value=ds.arv||'';
+$('purchaseInput').value=ds.purchase||'';
+$('closingPctInput').value=ds.closingPct||'3';
+$('monthlyHoldInput').value=ds.monthlyHold||'1200';
+$('monthsHeldInput').value=ds.monthsHeld||'6';
+$('sellingPctInput').value=ds.sellingPct||'6';
+
+const arv=parseFloat($('arvInput')?.value)||0;
+const purchase=parseFloat($('purchaseInput')?.value)||0;
+const closingPct=parseFloat($('closingPctInput')?.value||'3')/100;
+const monthlyHold=parseFloat($('monthlyHoldInput')?.value||'1200');
+const monthsHeld=parseFloat($('monthsHeldInput')?.value||'6');
+const sellingPct=parseFloat($('sellingPctInput')?.value||'6')/100;
+
+if(arv>0||purchase>0){
+const closingCosts=purchase*closingPct;
+const holdingCosts=monthlyHold*monthsHeld;
+const sellingCosts=arv*sellingPct;
+const totalCostBasis=purchase+total+closingCosts+holdingCosts+sellingCosts;
+const profit=arv-totalCostBasis;
+const roi=totalCostBasis>0?(profit/totalCostBasis*100):0;
+const estMargin=(arv>0)?((arv-totalCostBasis)/arv*100):0;
+
+$('dealResults').innerHTML=
+'<div class="row"><span class="label">ARV (After Repair Value)</span><span class="value">$'+Math.round(arv).toLocaleString()+'</span></div>'+
+'<div class="row"><span class="label">Purchase Price</span><span class="value">$'+Math.round(purchase).toLocaleString()+'</span></div>'+
+'<div class="row"><span class="label">Repair Estimate</span><span class="value">$'+Math.round(total).toLocaleString()+'</span></div>'+
+'<div class="row"><span class="label">Closing Costs ('+(closingPct*100).toFixed(1)+'%)</span><span class="value">$'+Math.round(closingCosts).toLocaleString()+'</span></div>'+
+'<div class="row"><span class="label">Holding Costs ('+monthsHeld+'mo @ $'+Math.round(monthlyHold).toLocaleString()+')</span><span class="value">$'+Math.round(holdingCosts).toLocaleString()+'</span></div>'+
+'<div class="row"><span class="label">Selling Costs ('+(sellingPct*100).toFixed(1)+'%)</span><span class="value">$'+Math.round(sellingCosts).toLocaleString()+'</span></div>'+
+'<div class="row" style="border-bottom:2px solid var(--amber);padding-bottom:8px;margin-bottom:4px"><span class="label" style="font-weight:700">Total Cost Basis</span><span class="value" style="font-weight:700">$'+Math.round(totalCostBasis).toLocaleString()+'</span></div>'+
+'<div class="row total"><span class="label">Estimated Profit</span>'+
+'<span class="value '+(profit>=0?'positive':'negative')+'">'+(profit>=0?'+':'')+'$'+Math.round(profit).toLocaleString()+'</span></div>'+
+'<div style="display:flex;gap:8px">'+
+'<div class="row" style="flex:1;border-bottom:none"><span class="label">ROI</span><span class="value '+(roi>=0?'positive':'negative')+'">'+(roi>=0?'+':'')+roi.toFixed(1)+'%</span></div>'+
+'<div class="row" style="flex:1;border-bottom:none"><span class="label">Margin</span><span class="value '+(estMargin>=0?'positive':'negative')+'">'+(estMargin>=0?'+':'')+estMargin.toFixed(1)+'%</span></div>'+
+'</div>';
+}else{
+$('dealResults').innerHTML='<div style="text-align:center;padding:12px;font-size:13px;color:rgba(255,255,255,.5)">Enter ARV and purchase price to analyze deal profitability.</div>';
+}
+}
+
+function saveDealState(){
+const proj=getProject();if(!proj)return;
+if(!proj.dealState)proj.dealState={};
+proj.dealState.arv=parseFloat($('arvInput')?.value)||0;
+proj.dealState.purchase=parseFloat($('purchaseInput')?.value)||0;
+proj.dealState.closingPct=parseFloat($('closingPctInput')?.value)||3;
+proj.dealState.monthlyHold=parseFloat($('monthlyHoldInput')?.value)||1200;
+proj.dealState.monthsHeld=parseFloat($('monthsHeldInput')?.value)||6;
+proj.dealState.sellingPct=parseFloat($('sellingPctInput')?.value)||6;
+proj.updatedAt=Date.now();saveState();
+}
+
+async function doExport(){
+const proj=getProject();if(!proj)return;
+const btn=$('exportBtn');const orig=btn.innerHTML;
+btn.innerHTML='<span class="spinner"></span> Exporting...';btn.disabled=true;
+try{
+const data=[['Item ID','Item Name','Room/Group','Quantity','Unit','Unit Cost','Line Total']];
+const groups=getAllRoomGroups(proj);
+groups.forEach(rg=>{
+const items=getItemsForGroup(rg);
+items.forEach(it=>{
+const st=getItemState(proj,it.id,rg.roomId);
+if(st.checked){const c=getItemCost(it.id);const q=st.qty||1;data.push([it.id,it.name,(rg.prefix||'')+rg.label,q,it.unit,c,c*q])}
+});
+});
+proj.customItems.forEach(it=>{if(it.checked){data.push([it.id||'CUSTOM',it.name,'Custom',it.qty||1,it.unit||'ea.',it.cost,it.cost*(it.qty||1)])}});
+const gt=getTotal(proj);data.push([]);data.push(['','','','','','GRAND TOTAL',gt]);
+
+let xlsxData;
+if(typeof XLSX!=='undefined'){
+const wb=XLSX.utils.book_new();
+XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(data),'Repair Estimate');
+if(proj.photos&&proj.photos.length>0){
+const pd=[['Photo','Filename','Serial Number']];
+proj.photos.forEach((p,i)=>{pd.push([i+1,p.name||'',p.serial||''])});
+XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(pd),'Photos');
+}
+xlsxData=XLSX.write(wb,{bookType:'xlsx',type:'array'});
+}else{
+const sheets=[{name:'Repair Estimate',data:data.map(r=>r.map(c=>typeof c==='string'?c:isNaN(c)?'':c))}];
+if(proj.photos&&proj.photos.length>0){
+const pd=[['Photo','Filename','Serial Number']];
+proj.photos.forEach((p,i)=>{pd.push([i+1,p.name||'',p.serial||''])});
+sheets.push({name:'Photos',data:pd});
+}
+const result=await makeXLSX(data,sheets);
+if(result.csv){
+saveBlob(new Blob([result.data],{type:'text/csv'}),escHtml(proj.name).replace(/[^a-zA-Z0-9]/g,'_')+'_estimate.csv');
+toast('Export complete (CSV fallback)');
+btn.innerHTML=orig;btn.disabled=false;
+return;
+}else{xlsxData=result}
+}
+
+const files=[['repair_estimate.xlsx',xlsxData]];
+if(proj.photos){
+for(let i=0;i<proj.photos.length;i++){
+const p=proj.photos[i];let src=p.data;
+if(!src&&p.idbKey)src=await dbGet(p.idbKey);
+if(src){
+const b64=src.split(',')[1];
+try{
+const bin=atob(b64);files.push(['photos/photo_'+(i+1)+'.jpg',bin]);
+}catch(e){}
+}
+}
+}
+var zipFile;
+if(typeof JSZip!=='undefined'){
+const z=new JSZip();
+files.forEach(f=>{z.file(f[0],f[1])});
+zipFile=await z.generateAsync({type:'blob'});
+}else{
+zipFile=makeZIP(files);
+}
+saveBlob(zipFile,escHtml(proj.name).replace(/[^a-zA-Z0-9]/g,'_')+'_estimate.zip');
+toast('Export complete!');
+}catch(e){toast('Export failed: '+e.message)}
+finally{btn.innerHTML=orig;btn.disabled=false}
+}
+
+function toast(msg){
+const el=document.createElement('div');el.className='toast';el.textContent=msg;el.setAttribute('role','alert');
+document.body.appendChild(el);
+setTimeout(()=>{el.style.opacity='0';el.style.transition='opacity .3s';setTimeout(()=>el.remove(),300)},2500);
+}
+
+function showModal(html){$('modalContent').innerHTML=html;$('modalOverlay').style.display='flex'}
+function closeModal(){$('modalOverlay').style.display='none'}
+
+function showNewProjectModal(){
+let html='<h2 id="modalTitle">New Project</h2><label for="newProjectName">Project Name</label>';
+html+='<input type="text" id="newProjectName" placeholder="e.g., 123 Main St" autofocus>';
+html+='<div class="btn-row"><button class="btn btn-secondary" data-action="close-modal">Cancel</button>';
+html+='<button class="btn btn-primary" data-action="create-project">Create Project</button></div>';
+showModal(html);
+setTimeout(()=>{const inp=$('newProjectName');if(inp)inp.focus()},100);
+}
+
+function createNewProject(){
+const name=$('newProjectName').value.trim();
+if(!name){toast('Enter a project name');return}
+closeModal();createProject(name);render();
+}
+
+function setupEventDelegation(){
+const app=$('app');
+const overlay=$('modalOverlay');
+
+overlay.addEventListener('click',function(e){
+if(e.target===this)closeModal();
+const t=e.target.closest('[data-action]');
+if(!t||!t.dataset)return;
+const a=t.dataset.action;
+if(a==='close-modal')closeModal();
+else if(a==='create-project')createNewProject();
+else if(a==='add-room')addRoom();
+else if(a==='add-custom-item')addCustomItem(t.dataset.section,t.dataset.group,t.dataset.room);
+else if(a==='save-room-label')saveRoomLabel(t.dataset.id);
+else if(a==='delete-current-project'){closeModal();deleteProject(getProject()?.id)}
+else if(a==='save-project-settings')saveProjectSettings();
+else if(a==='duplicate-project')duplicateProject();
+});
+
+app.addEventListener('click',function(e){
+const t=e.target.closest('[data-action]');
+if(!t||!t.dataset)return;
+const a=t.dataset.action;
+switch(a){
+case 'back':state.currentId=null;saveState();render();break;
+case 'new-project':case 'show-new-project':showNewProjectModal();break;
+case 'menu':showMenuModal();break;
+case 'open-project':openProject(t.dataset.id);break;
+case 'delete-project':e.stopPropagation();deleteProject(t.dataset.id);break;
+case 'tab':switchTab(t.dataset.tab);break;
+case 'export':doExport();break;
+case 'show-rooms':showRoomModal();break;
+case 'add-photo':$('photoInput').click();break;
+case 'toggle-group':toggleGroup(t.dataset.key);break;
+case 'toggle-item':{const cb=t;toggleItem(t.dataset.id,t.dataset.room,cb.checked);break}
+case 'no-action':toggleNoAction(t.dataset.key,t.checked);break;
+case 'toggle-custom':toggleCustomItem(parseInt(t.dataset.index),t.checked);break;
+case 'delete-custom':deleteCustomItem(parseInt(t.dataset.index));break;
+case 'add-custom':showAddItemModal(t.dataset.section,t.dataset.group,t.dataset.room);break;
+case 'add-room':addRoom();break;
+case 'remove-room':e.stopPropagation();removeRoom(t.dataset.id);break;
+case 'edit-room':editRoom(t.dataset.id);break;
+case 'save-room-label':saveRoomLabel(t.dataset.id);break;
+case 'add-custom-item':addCustomItem(t.dataset.section,t.dataset.group,t.dataset.room);break;
+case 'close-modal':closeModal();break;
+case 'create-project':createNewProject();break;
+case 'delete-photo':confirmDeletePhoto(parseInt(t.dataset.index));break;
+case 'reset-global-prices':{
+if(!confirm('Reset all global prices to defaults?'))return;
+state.globalPrices={};saveState();renderSettings();rafRender();
+break;
+}
+case 'import-csv':importCSV();break;
+case 'duplicate-project':duplicateProject();break;
+}
+});
+
+app.addEventListener('change',function(e){
+const t=e.target.closest('[data-action]');
+if(!t||!t.dataset)return;
+const a=t.dataset.action;
+switch(a){
+case 'set-qty':setQty(t.dataset.id,t.dataset.room,t.value);break;
+case 'set-price':setPrice(t.dataset.id,t.dataset.room,t.value);break;
+case 'set-custom-qty':setCustomQty(parseInt(t.dataset.index),t.value);break;
+case 'set-custom-price':setCustomPrice(parseInt(t.dataset.index),t.value);break;
+case 'set-global-price':setGlobalPrice(t.dataset.id,t.value);break;
+case 'photo-serial':setPhotoSerial(parseInt(t.dataset.index),t.value);break;
+}
+});
+
+app.addEventListener('input',function(e){
+const t=e.target.closest('[data-action]');
+if(!t||!t.dataset)return;
+const a=t.dataset.action;
+if(a==='deal-input'){
+saveDealState();
+renderDealAnalyzer();
+}
+});
+
+app.addEventListener('keydown',function(e){
+if(e.key==='Escape'){if($('modalOverlay').style.display==='flex')closeModal()}
+});
+}
+
+function showMenuModal(){
+const proj=getProject();if(!proj)return;
+let html='<h2 id="modalTitle">Project Menu</h2><label style="margin-top:0">Project: '+escHtml(proj.name)+'</label>';
+html+='<label for="renameInput">Rename Project</label><input type="text" id="renameInput" value="'+escHtml(proj.name)+'">';
+html+='<label for="notesInput">Notes</label><textarea id="notesInput" style="width:100%;padding:10px 12px;border:1px solid var(--slate-200);border-radius:8px;font-size:15px;resize:vertical;min-height:60px;font-family:inherit">'+escHtml(proj.notes||'')+'</textarea>';
+html+='<div class="btn-row"><button class="btn btn-ghost" data-action="duplicate-project">Duplicate</button>';
+html+='<button class="btn btn-danger" data-action="delete-current-project">Delete</button></div>';
+html+='<div class="btn-row"><button class="btn btn-secondary" data-action="close-modal">Cancel</button>';
+html+='<button class="btn btn-primary" data-action="save-project-settings">Save</button></div>';
+showModal(html);
+setTimeout(()=>{$('renameInput')?.focus();$('renameInput')?.select()},100);
+}
+
+function saveProjectSettings(){
+const proj=getProject();if(!proj)return;
+const name=$('renameInput').value.trim();
+if(name)proj.name=name;
+proj.notes=$('notesInput').value;
+proj.updatedAt=Date.now();saveState();closeModal();render();
+}
+
+function duplicateProject(){
+const proj=getProject();if(!proj)return;
+const id=uid();
+const clone=JSON.parse(JSON.stringify(proj));
+clone.id=id;clone.name=proj.name+' (Copy)';clone.createdAt=Date.now();clone.updatedAt=Date.now();
+clone.photos=[];clone.dealState={};
+state.projects[id]=clone;
+state.currentId=id;
+saveState();closeModal();render();
+toast('Project duplicated');
+}
+
+function importCSV(){
+$('csvInput').click();
+}
+
+$('csvInput').onchange=function(e){
+const f=e.target.files&&e.target.files[0];
+if(!f)return;
+const r=new FileReader();
+r.onload=function(){
+try{
+const text=r.result;
+const lines=text.split('\n').filter(l=>l.trim());
+let imported=0;
+for(let i=1;i<lines.length;i++){
+const parts=lines[i].split(',').map(s=>s.trim().replace(/^"|"$/g,''));
+if(parts.length>=3){
+const id=parts[0];const cost=parseFloat(parts[2]);
+if(id&&!isNaN(cost)&&cost>=0){
+const item=ITEMS.find(it=>it.id===id);
+if(item){state.globalPrices[id]=cost;imported++}
+}
+}
+}
+saveState();renderSettings();rafRender();
+toast('Imported '+imported+' prices');
+}catch(err){toast('CSV parse error: '+err.message)}
+};
+r.readAsText(f);
+e.target.value='';
+};
+
+$('photoInput').onchange=async function(e){
+const proj=getProject();if(!proj)return;
+const files=e.target.files;if(!files||!files.length)return;
+for(const f of files){
+try{
+const dataUrl=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(f)});
+const compressed=await compressImageSmall(dataUrl);
+const idbKey=uid();
+const stored=await dbPut(idbKey,compressed);
+if(!proj.photos)proj.photos=[];
+proj.photos.push({idbKey:stored?idbKey:null,data:null,name:f.name,serial:null});
+if(!stored){toast('Photo saved without IndexedDB backup')}
+proj.updatedAt=Date.now();saveState();
+renderPhotos();$('photoCount').textContent=proj.photos.length;
+initPhotoSwipe();
+}catch(err){toast('Failed to process photo: '+(err.message||'unknown error'))}
+}
+e.target.value='';
+};
+
+setupEventDelegation();
+loadState();
+
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{})}
+
+const manifest={
+name:'Spark Homes Estimator',short_name:'Spark Est',
+description:'Repair cost estimator for Spark Homes acquisition team',
+start_url:'/index.html',display:'standalone',
+background_color:'#1e293b',theme_color:'#1e293b',
+icons:[
+{src:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='64' fill='%231e293b'/%3E%3Ctext x='256' y='340' font-size='280' text-anchor='middle' fill='%23f59e0b' font-family='serif'%3ES%3C/text%3E%3C/svg%3E",sizes:'512x512',type:'image/svg+xml',purpose:'any maskable'},
+{src:"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAACQ0lEQVR4nO3dQQ0AIxDAsP83Dwv4l0BCJ3O2+4oIS0RkzQEkf4/JJJEkJkkkSZJIEkkiSSJJkkiSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSSRJJEkkSRJJEkkSSRJPkH0CPW1CqJtwcAAAAASUVORK5CYII=",sizes:'180x180',type:'image/png',purpose:'any'}]
+};
+$('manifestLink').href='data:application/json,'+encodeURIComponent(JSON.stringify(manifest));
+
+window.state=state;window.saveState=saveState;window.render=render;window.ITEMS=ITEMS;window.toast=toast;
+
+render();
+</script>
+</body>
+</html>
